@@ -1,0 +1,19 @@
+<table ng-class="table.classes" style="width:100%;">
+  <thead>
+  <tr>
+    <th ng-repeat="column in table.columns"
+        ng-bind="column.heading"
+        ng-click="table.setSortColumn(column)"
+        ng-class="{'wss-column-sortable': table.sortable || column.sortable}">
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="row in table.rows | orderBy : table.sortColumn : table.sortDesc">
+    <td ng-repeat="column in table.columns">
+      <wss-table-cell column="column" row="row">
+      </wss-table-cell>
+    </td>
+  </tr>
+  </tbody>
+</table>

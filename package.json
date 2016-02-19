@@ -1,0 +1,26 @@
+{
+  "name": "wss-table",
+  "version": "1.0.0",
+  "description": "A simple angular 1 table",
+  "main": "wss-table.js",
+  "scripts": {
+    "build": "gulp build"
+  },
+  "keywords": [
+    "angular",
+    "table",
+    "readonly",
+    "sort",
+    "sortable"
+  ],
+  "author": "Woodward Software Service Ltd",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-angular-templatecache": "^1.8.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-uglify": "^1.5.2",
+    "merge-stream": "^1.0.0",
+    "merge2": "^1.0.1"
+  }
+}
