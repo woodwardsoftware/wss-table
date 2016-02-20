@@ -20,7 +20,9 @@ gulp.task('build', function () {
 
   var devJs = jsFiles.pipe(concat('wss-table.dev.js'));
 
-  return merge2([devJs, minJs])
+  var css = gulp.src('src/wss-table.css');
+
+  return merge2([devJs, minJs, css])
     .pipe(gulp.dest('dist'));
 });
 
