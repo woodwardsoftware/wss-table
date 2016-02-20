@@ -1,0 +1,26 @@
+{
+  "name": "wss-table",
+  "description": "A simple angular 1.x table",
+  "main": [
+    "./dist/wss-table.min.js",
+    "./dist/wss-table.css"
+  ],
+  "authors": [
+    "Woodward Software Service Ltd"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "table",
+    "readonly",
+    "sort",
+    "sortable"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
