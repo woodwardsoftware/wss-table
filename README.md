@@ -3,7 +3,7 @@ WSS-Table
 
 A simple read only table with sortable columns.
 
-``` javascript
+``` html
 <wss-table columns="array"
            rows="array"
            [classes="expression"]
