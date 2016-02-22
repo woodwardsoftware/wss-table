@@ -17,11 +17,11 @@
       },
       bindToController: true,
       controllerAs: 'table',
-      controller: ['$templateRequest', wssTableCtrl],
+      controller: wssTableCtrl,
       link: link
     };
 
-    function wssTableCtrl($templateRequest) {
+    function wssTableCtrl() {
       var vm = this;
 
       vm.sortable = false;
@@ -30,15 +30,6 @@
 
       vm.setSortable = setSortable;
       vm.setSortColumn = setSortColumn;
-
-      setup();
-
-      function setup() {
-        vm.columns.forEach(function (column) {
-          if (column.templateUrl) {
-          }
-        });
-      }
 
       function setSortable(sortable) {
         vm.sortable = sortable;

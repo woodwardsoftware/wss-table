@@ -24,11 +24,11 @@
       },
       bindToController: true,
       controllerAs: 'table',
-      controller: ['$templateRequest', wssTableCtrl],
+      controller: wssTableCtrl,
       link: link
     };
 
-    function wssTableCtrl($templateRequest) {
+    function wssTableCtrl() {
       var vm = this;
 
       vm.sortable = false;
@@ -37,15 +37,6 @@
 
       vm.setSortable = setSortable;
       vm.setSortColumn = setSortColumn;
-
-      setup();
-
-      function setup() {
-        vm.columns.forEach(function (column) {
-          if (column.templateUrl) {
-          }
-        });
-      }
 
       function setSortable(sortable) {
         vm.sortable = sortable;
@@ -82,16 +73,12 @@
   function wssTableCell($compile, $templateRequest) {
     return {
       restrict: 'E',
-      scope: {
-        row: '=row',
-        column: '=column'
-      },
       link: link
     };
 
     function link(scope, element) {
       scope.$watch('column.template', function (newTemplate) {
-        if (!newTemplate) {
+        if (!newTemplate || scope.column.templateUrl) {
           return;
         }
         compileTemplate(newTemplate);
@@ -105,26 +92,23 @@
         $templateRequest(newTemplateUrl).then(function (template) {
           compileTemplate(template);
         });
-
       });
 
       scope.$watch('column.key', function (newKey) {
-        if (!newKey) {
+        if (!newKey || scope.column.template || scope.column.templateUrl) {
           return;
         }
-        compileTemplate('{{row[\'' + newKey + '\']}}')
+        compileTemplate('{{row.' + newKey + '}}')
       });
 
       function compileTemplate(template) {
         var div = document.createElement('div');
         div.innerHTML = template;
-        var newScope = scope.$new(true);
-        newScope.row = scope.row;
-        var compiledTemplate = $compile(div)(newScope);
+        var compiledTemplate = $compile(div)(scope);
         element.empty();
         element.append(compiledTemplate);
       }
     }
   }
 })();
-angular.module("wss-table").run(["$templateCache", function($templateCache) {$templateCache.put("wss-table.html","<table ng-class=\"table.classes\" style=\"width:100%;\">\n  <thead>\n  <tr>\n    <th ng-repeat=\"column in table.columns\"\n        ng-bind=\"column.heading\"\n        ng-click=\"table.setSortColumn(column)\"\n        ng-class=\"{\'wss-column-sortable\': table.sortable || column.sortable}\">\n    </th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr ng-repeat=\"row in table.rows | orderBy : table.sortColumn : table.sortDesc\">\n    <td ng-repeat=\"column in table.columns\">\n      <wss-table-cell column=\"column\" row=\"row\">\n      </wss-table-cell>\n    </td>\n  </tr>\n  </tbody>\n</table>\n");}]);
+angular.module("wss-table").run(["$templateCache", function($templateCache) {$templateCache.put("wss-table.html","<table ng-class=\"table.classes\">\n  <thead>\n  <tr>\n    <th ng-repeat=\"column in table.columns\"\n        ng-bind=\"column.heading\"\n        ng-click=\"table.setSortColumn(column)\"\n        ng-class=\"{\'wss-column-sortable\': table.sortable || column.sortable}\">\n    </th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr ng-repeat=\"row in table.rows | orderBy : table.sortColumn : table.sortDesc\">\n    <td ng-repeat=\"column in table.columns\">\n      <wss-table-cell>\n      </wss-table-cell>\n    </td>\n  </tr>\n  </tbody>\n</table>\n");}]);
