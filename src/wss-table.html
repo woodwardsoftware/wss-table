@@ -10,7 +10,7 @@
   </thead>
   <tbody>
   <tr ng-repeat="(rowIndex, row) in table.rows | orderBy : table.sortColumn : table.sortDesc">
-    <td ng-repeat="(columnIndex, column) in table.columns">
+    <td ng-repeat="(columnIndex, column) in table.columns" ng-class="column.class">
       <wss-table-cell>
       </wss-table-cell>
     </td>
