@@ -9,8 +9,8 @@
   </tr>
   </thead>
   <tbody>
-  <tr ng-repeat="row in table.rows | orderBy : table.sortColumn : table.sortDesc">
-    <td ng-repeat="column in table.columns">
+  <tr ng-repeat="(rowIndex, row) in table.rows | orderBy : table.sortColumn : table.sortDesc">
+    <td ng-repeat="(columnIndex, column) in table.columns">
       <wss-table-cell>
       </wss-table-cell>
     </td>
