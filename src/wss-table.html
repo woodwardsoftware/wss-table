@@ -2,9 +2,10 @@
   <thead>
   <tr>
     <th ng-repeat="column in table.columns"
-        ng-bind-html="column.heading"
         ng-click="table.setSortColumn(column)"
         ng-class="{'wss-column-sortable': table.sortable || column.sortable}">
+      <wss-table-heading>
+      </wss-table-heading>
     </th>
   </tr>
   </thead>

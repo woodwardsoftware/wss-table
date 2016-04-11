@@ -8,7 +8,8 @@ gulp.task('build', function () {
   var jsFiles = merge2(gulp.src([
       'src/wss-table.module.js',
       'src/wss-table.directive.js',
-      'src/wss-table-cell.directive.js'
+      'src/wss-table-cell.directive.js',
+      'src/wss-table-heading.directive.js'
     ]),
     gulp.src('src/wss-table.html')
       .pipe(templateCache({

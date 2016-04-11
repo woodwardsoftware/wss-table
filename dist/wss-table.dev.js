@@ -111,4 +111,53 @@
     }
   }
 })();
-angular.module("wss-table").run(["$templateCache", function($templateCache) {$templateCache.put("wss-table.html","<table ng-class=\"table.classes\">\n  <thead>\n  <tr>\n    <th ng-repeat=\"column in table.columns\"\n        ng-bind-html=\"column.heading\"\n        ng-click=\"table.setSortColumn(column)\"\n        ng-class=\"{\'wss-column-sortable\': table.sortable || column.sortable}\">\n    </th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr ng-repeat=\"(rowIndex, row) in table.rows | orderBy : table.sortColumn : table.sortDesc\">\n    <td ng-repeat=\"(columnIndex, column) in table.columns\" ng-class=\"column.class\">\n      <wss-table-cell>\n      </wss-table-cell>\n    </td>\n  </tr>\n  </tbody>\n</table>\n");}]);
+(function () {
+  'use strict';
+
+  angular.module('wss-table')
+    .directive('wssTableHeading', ['$compile', '$templateRequest', wssTableHeading]);
+
+  function wssTableHeading($compile, $templateRequest) {
+    return {
+      restrict: 'E',
+      link: link
+    };
+
+    function link(scope, element) {
+      scope.$watch('column.headingTemplate', function (newTemplate) {
+        if (!newTemplate || scope.column.headingTemplateUrl) {
+          return;
+        }
+        compileTemplate(newTemplate);
+      });
+
+      scope.$watch('column.headingTemplateUrl', function (newTemplateUrl) {
+        if (!newTemplateUrl) {
+          return;
+        }
+
+        $templateRequest(newTemplateUrl).then(function (template) {
+          compileTemplate(template);
+        });
+      });
+
+      scope.$watch('column.heading', function (newKey) {
+        if (!newKey || scope.column.headingTemplate || scope.column.headingTemplateUrl) {
+          return;
+        }
+        compileTemplate('{{column.heading}}');
+      });
+
+      function compileTemplate(template) {
+        var div = document.createElement('div');
+        div.innerHTML = template;
+        var compiledTemplate = $compile(div)(scope);
+        element.empty();
+        element.append(compiledTemplate);
+      }
+    }
+  }
+})();
+
+
+angular.module("wss-table").run(["$templateCache", function($templateCache) {$templateCache.put("wss-table.html","<table ng-class=\"table.classes\">\n  <thead>\n  <tr>\n    <th ng-repeat=\"column in table.columns\"\n        ng-click=\"table.setSortColumn(column)\"\n        ng-class=\"{\'wss-column-sortable\': table.sortable || column.sortable}\">\n      <wss-table-heading>\n      </wss-table-heading>\n    </th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr ng-repeat=\"(rowIndex, row) in table.rows | orderBy : table.sortColumn : table.sortDesc\">\n    <td ng-repeat=\"(columnIndex, column) in table.columns\" ng-class=\"column.class\">\n      <wss-table-cell>\n      </wss-table-cell>\n    </td>\n  </tr>\n  </tbody>\n</table>\n");}]);
